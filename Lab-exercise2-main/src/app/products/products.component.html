@@ -1,0 +1,51 @@
+<h2>Our Products</h2>
+
+<!-- CATEGORY FILTER -->
+<div class="filter">
+  <label>Filter by Category:</label>
+  <select [(ngModel)]="selectedCategory">
+    <option>All</option>
+    <option>Audio</option>
+    <option>Wearable</option>
+    <option>Accessories</option>
+    <option>Gadget</option>
+    <option>Cellphone</option>
+  </select>
+</div>
+
+<!-- PRODUCTS -->
+<div class="product-container">
+  <div class="product-card" *ngFor="let product of filteredProducts">
+    <img [src]="product.image" alt="{{ product.name }}">
+    <h3>{{ product.name }}</h3>
+    <p class="price">₱{{ product.price }}</p>
+
+    <!-- STOCK STATUS -->
+    <p *ngIf="product.stock > 0">Stock: {{ product.stock }}</p>
+    <p *ngIf="product.stock === 0" class="out-stock">Out of Stock</p>
+
+    <button 
+      (click)="addToCart(product)" 
+      [disabled]="product.stock === 0">
+      Add to Cart
+    </button>
+  </div>
+</div>
+
+<!-- CART SECTION -->
+<div class="cart">
+  <h2>Shopping Cart ({{ cart.length }})</h2>
+
+  <div *ngIf="cart.length === 0">
+    <p>Your cart is empty.</p>
+  </div>
+
+  <div *ngFor="let item of cart; let i = index">
+    {{ item.name }} - ₱{{ item.price }}
+    <button class="remove-btn" (click)="removeFromCart(i)">Remove</button>
+  </div>
+
+  <h3 *ngIf="cart.length > 0">
+    Total: ₱{{ getTotal() }}
+  </h3>
+</div>
